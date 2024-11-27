@@ -1,0 +1,10 @@
+model_path: /models/mistral_7b_in_v02/mistral_7b_in_v02.gguf
+n_gpu_layers: 250
+temperature: 0.01
+max_tokens: 512
+n_batch: 512
+n_ctx: 1024
+verbose: True
+use_mlock: False
+streaming: False
+seed: 42

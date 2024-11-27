@@ -1,0 +1,77 @@
+services:
+  api:
+    container_name: impetus-agent-api
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    image: impetus-agent-api:1.0
+    command: uvicorn src.api.main:app --host 0.0.0.0 --port 8080 --reload --log-level debug
+    ports:
+      - "10009:8080/tcp"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500M"
+        max-file: "2"
+    restart: always
+    volumes:
+      - ./backend:/app
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 2s
+    env_file:
+      - backend/.env
+    cap_add:
+      - SYS_RESOURCE
+    ulimits:
+      memlock:
+        soft: 65979612
+        hard: 65979612
+    runtime: nvidia
+    environment:
+      USE_MLOCK: 0
+      NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+      NVIDIA_VISIBLE_DEVICES: all
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+                
+  text-generation:
+    image: ghcr.io/huggingface/text-generation-inference:2.2.0
+    container_name: TGI 
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./TGI_data:/data
+    ports:
+      - "10010:80"
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    shm_size: '1g'
+    command:
+      - --model-id
+      - mistralai/Mistral-7B-Instruct-v0.2
+      - --max-batch-size
+      - "4"
+
+    networks:
+      - app-network
+
+
+networks:
+  app-network:

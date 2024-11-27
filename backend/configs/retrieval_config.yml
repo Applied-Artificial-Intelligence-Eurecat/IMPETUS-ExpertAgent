@@ -1,0 +1,17 @@
+DATA_PATH: "/data"
+VECTOR_DB_PATH: "/databases/vector_db"
+EMBEDDING_MODEL_PATH:  "thenlper/gte-large"
+K: 10
+ALLOW_DANGEROUS_DESERIALIZATION: True
+
+# BUILD Configuration
+# {!} Is mandatory to also create `ext`-key inside the RA.AVAILABLE_EXTENSIONS otherwise the
+# extensions will not be loaded
+ENABLED_EXTENSIONS: ["pdf", "txt", "md", "json"]
+DEVICE: "cuda" # Accepts "cpu" and "cuda"
+CHUNK_SIZE: 512
+CHUNK_OVERLAP: 20
+RERANK_TOP_N: 5
+RERANK_TOKENIZER: "BAAI/bge-reranker-large"
+RERANK_MODEL: "BAAI/bge-reranker-base"
+

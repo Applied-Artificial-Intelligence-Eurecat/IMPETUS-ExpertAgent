@@ -1,0 +1,3 @@
+LLM_CONFIG_PATH: "LLM_config.yml"
+RETRIEVAL_CONFIG_PATH: "retrieval_config.yml"
+QTM_CONFIG_PATH: "qtm_config.yml"

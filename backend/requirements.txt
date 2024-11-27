@@ -1,0 +1,14 @@
+fastapi==0.110.2
+python-multipart==0.0.9
+pydantic-settings==2.2.1
+httpx==0.27.0
+PyJWT==2.8.0
+uvicorn==0.29.0
+langchain==0.1.12
+SQLAlchemy==2.0.30
+faiss-gpu==1.7.4
+sentence-transformers
+langchain-community
+pdfplumber
+openparse
+google-api-python-client
